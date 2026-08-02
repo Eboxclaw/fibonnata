@@ -88,7 +88,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "FiboNNata" },
+      { title: "FiboNNata · Intelligence shouldn't need everything" },
       {
         name: "description",
         content:
@@ -107,13 +107,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@fibonnata" },
+      { name: "twitter:title", content: "FiboNNata · Intelligence shouldn't need everything" },
+      { name: "twitter:description", content: "FiboNNata builds infrastructure for AI systems that learn selectively, remember efficiently, and compute only what matters." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/76b052f3-fdbe-4785-8512-691608651006/id-preview-3817f1f3--d17b9dfb-5d8c-49fe-8ff2-b054d9cd1d0c.lovable.app-1785628937874.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/76b052f3-fdbe-4785-8512-691608651006/id-preview-3817f1f3--d17b9dfb-5d8c-49fe-8ff2-b054d9cd1d0c.lovable.app-1785628937874.png" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       {
         rel: "preconnect",
