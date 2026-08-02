@@ -81,10 +81,10 @@ function buildScene(
   const count = 1200;
   const positions = new Float32Array(count * 3);
   const pts = fibonacciSpherePoints(count, 2.2);
-  for (let i = 0; i < count; i++) {
-    positions[i * 3] = pts[i].x;
-    positions[i * 3 + 1] = pts[i].y;
-    positions[i * 3 + 2] = pts[i].z;
+  for (const [i, p] of pts.entries()) {
+    positions[i * 3] = p.x;
+    positions[i * 3 + 1] = p.y;
+    positions[i * 3 + 2] = p.z;
   }
 
   const geometry = new THREE.BufferGeometry();

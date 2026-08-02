@@ -21,11 +21,12 @@ export function ArchitectureDiagram({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    let interval: ReturnType<typeof setInterval> | undefined;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry?.isIntersecting) {
           let progress = 0;
-          const interval = setInterval(() => {
+          interval = setInterval(() => {
             progress += 1;
             setActive((prev) => {
               const next = Math.min(progress, steps.length - 1);
@@ -37,13 +38,15 @@ export function ArchitectureDiagram({
             }
           }, 400);
           observer.disconnect();
-          return () => clearInterval(interval);
         }
       },
       { threshold: 0.4 }
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      if (interval) clearInterval(interval);
+      observer.disconnect();
+    };
   }, [steps.length]);
 
   return (
