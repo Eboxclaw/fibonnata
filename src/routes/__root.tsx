@@ -88,27 +88,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "FiboNNata · Intelligence shouldn't need everything" },
+      { title: "Fibonnata · A portable adaptation layer for language models" },
       {
         name: "description",
         content:
-          "FiboNNata builds infrastructure for AI systems that learn selectively, remember efficiently, and compute only what matters.",
+          "Fibonnata is a portable adaptation layer and local-first runtime architecture for small language models: the .natech talent file, a three-operation SDK, and the Bonnata Stack.",
       },
-      { name: "author", content: "FiboNNata" },
+      { name: "author", content: "Fibonnata" },
       {
         property: "og:title",
-        content: "FiboNNata · Intelligence shouldn't need everything",
+        content: "Fibonnata · A portable adaptation layer for language models",
       },
       {
         property: "og:description",
         content:
-          "FiboNNata builds infrastructure for AI systems that learn selectively, remember efficiently, and compute only what matters.",
+          "An architecture-agnostic file format for trained adapters, operations for combining and retargeting them, and middleware that wraps existing inference engines.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Fibonnata" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@fibonnata" },
-      { name: "twitter:title", content: "FiboNNata · Intelligence shouldn't need everything" },
-      { name: "twitter:description", content: "FiboNNata builds infrastructure for AI systems that learn selectively, remember efficiently, and compute only what matters." },
+      { name: "twitter:title", content: "Fibonnata · A portable adaptation layer for language models" },
+      { name: "twitter:description", content: "An architecture-agnostic file format for trained adapters, plus middleware that wraps existing inference engines." },
+
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/76b052f3-fdbe-4785-8512-691608651006/id-preview-3817f1f3--d17b9dfb-5d8c-49fe-8ff2-b054d9cd1d0c.lovable.app-1785628937874.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/76b052f3-fdbe-4785-8512-691608651006/id-preview-3817f1f3--d17b9dfb-5d8c-49fe-8ff2-b054d9cd1d0c.lovable.app-1785628937874.png" },
     ],
