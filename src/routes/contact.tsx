@@ -7,16 +7,26 @@ export const Route = createFileRoute("/contact")({
   component: ContactPage,
   head: () => ({
     meta: [
-      { title: "Contact · FiboNNata" },
-      { name: "description", content: "Get in touch with FiboNNata." },
-      { property: "og:title", content: "Contact · FiboNNata" },
-      { property: "og:description", content: "Get in touch with FiboNNata." },
+      { title: "Contact · Fibonnata" },
+      {
+        name: "description",
+        content:
+          "Get in touch with Fibonnata about the .natech format, the SDK, or the Bonnata Stack.",
+      },
+      { property: "og:title", content: "Contact · Fibonnata" },
+      {
+        property: "og:description",
+        content:
+          "Get in touch with Fibonnata about the .natech format, the SDK, or the Bonnata Stack.",
+      },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/contact" },
+      { property: "og:url", content: "https://fibo-lazy-mind.lovable.app/contact" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "/contact" }],
+    links: [{ rel: "canonical", href: "https://fibo-lazy-mind.lovable.app/contact" }],
   }),
 });
+
 
 function ContactPage() {
   return (
