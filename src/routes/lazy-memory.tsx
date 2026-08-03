@@ -1,74 +1,102 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SectionHeader } from "@/components/SectionHeader";
-import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
+import { FlowDiagram } from "@/components/FlowDiagram";
 import { MemoryVisualization } from "@/components/MemoryVisualization";
 import { SectionReveal } from "@/components/SectionReveal";
 
 const steps = [
-  { label: "RAW MEMORY", detail: "Unstructured observations enter the system." },
-  { label: "DISCOVER", detail: "Patterns and relationships are found on demand." },
-  { label: "STORE", detail: "Only useful representations are kept." },
-  { label: "QUERY", detail: "A question triggers retrieval and expansion." },
-  { label: "INDEX", detail: "Indexes are built around what actually matters." },
-  { label: "EXPAND", detail: "Context grows only when necessary." },
-  { label: "COMPILE CONTEXT", detail: "A focused context is assembled for the agent." },
-  { label: "AGENT", detail: "The agent acts with just enough memory." },
+  {
+    label: "CAPTURE",
+    detail:
+      "Every interaction — a chat turn, an evaluation, a correction — is appended to a cold, append-only tier. Capture is cheap and happens by default.",
+  },
+  {
+    label: "DERIVE GRAPH",
+    detail:
+      "Entities and relationships are derived from what accumulates. The graph is rebuildable, never authoritative.",
+  },
+  {
+    label: "TRAINING EXPORT",
+    detail:
+      "Walk a subgraph and bundle a related cluster into a single training set — far better data than a flat transcript.",
+  },
+  {
+    label: "CURATED DATASET",
+    detail: "The hot tier: what an actual training run consumes.",
+  },
+  {
+    label: "MAKE",
+    detail:
+      "The resulting adapter re-enters the Fibonnata SDK as a .natech talent file.",
+  },
 ];
 
 export const Route = createFileRoute("/lazy-memory")({
   component: LazyMemoryPage,
   head: () => ({
     meta: [
-      { title: "Lazy Memory · FiboNNata" },
+      { title: "Lazy Memory · Fibonnata" },
       {
         name: "description",
         content:
-          "Lazy Memory is an adaptive memory architecture for AI agents that discovers relationships, creates indexes, and expands context only when necessary.",
+          "Lazy Memory is an append-only cold tier with a derived, rebuildable graph on top. Training exports are walked out of that graph; live retrieval is deliberately deferred.",
       },
-      { property: "og:title", content: "Lazy Memory · FiboNNata" },
+      { property: "og:title", content: "Lazy Memory · Fibonnata" },
       {
         property: "og:description",
         content:
-          "Lazy Memory is an adaptive memory architecture for AI agents that discovers relationships, creates indexes, and expands context only when necessary.",
+          "Capture is cheap, the graph is derived and rebuildable, and only live retrieval is deferred.",
       },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/lazy-memory" },
+      { property: "og:type", content: "article" },
+      { property: "og:url", content: "https://fibo-lazy-mind.lovable.app/lazy-memory" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "/lazy-memory" }],
+    links: [
+      { rel: "canonical", href: "https://fibo-lazy-mind.lovable.app/lazy-memory" },
+    ],
   }),
 });
 
 function LazyMemoryPage() {
   return (
-    <main className="mx-auto max-w-6xl px-6 pt-32 pb-24">
+    <main className="mx-auto max-w-6xl px-5 pt-28 pb-20 sm:px-6 sm:pt-32 sm:pb-24">
       <SectionHeader
-        eyebrow="Primitive 02"
-        title="Lazy Memory — adaptive memory."
-        subtitle="Don't build memory until you need it. Instead of embedding, indexing, graphing, summarizing, and loading everything upfront, the system progressively discovers useful representations based on actual queries and usage."
+        eyebrow="The memory tier"
+        title="Adapters have to come from somewhere."
+        subtitle="Most of what a running application generates is worth almost nothing individually, but a graph built from that raw material is worth a great deal: it turns isolated turns into a related, walkable structure that exports into far better training data than any flat transcript could."
       />
-      <ArchitectureDiagram steps={steps} title="The Lazy Memory flow" />
-      <div className="mt-16 grid gap-16 md:grid-cols-2">
+
+      <FlowDiagram steps={steps} title="From raw interaction to trained adapter" />
+
+      <div className="mt-14 grid gap-10 md:grid-cols-2 md:gap-16">
         <MemoryVisualization />
         <div className="space-y-6">
           <SectionReveal delay={100}>
-            <h3 className="font-display text-xl font-medium text-foreground">
-              Why lazy?
+            <h3 className="font-display text-lg font-medium text-foreground sm:text-xl">
+              The graph is derived, never the source of truth
             </h3>
             <p className="mt-2 leading-relaxed text-muted-foreground">
-              Upfront indexing is expensive and often wrong. Lazy Memory lets an
-              agent start with raw observations and build structure around real
-              questions. Memory grows where the work is, not everywhere.
+              It is rebuildable from the raw log at any time, and exported in its own
+              format, separate from .natech. A talent file describes trained weights; a
+              graph describes knowledge. Keeping them apart is what makes the graph, and
+              the training bundles walked out of it, usable by more than one training
+              pipeline.
             </p>
           </SectionReveal>
           <SectionReveal delay={200}>
-            <h3 className="font-display text-xl font-medium text-foreground">
-              What it combines
+            <h3 className="font-display text-lg font-medium text-foreground sm:text-xl">
+              Live retrieval is deferred
             </h3>
-            <ul className="mt-2 space-y-2 text-sm text-muted-foreground">
-              <li>— Structured memory and graph relationships</li>
-              <li>— Semantic and lexical retrieval</li>
-              <li>— Temporal relationships and summaries</li>
-              <li>— Adaptive indexes that evolve with use</li>
+            <p className="mt-2 leading-relaxed text-muted-foreground">
+              The model querying that graph mid-conversation is the one piece still held
+              back, and only because there is no reason to query a graph before it holds
+              anything worth querying.
+            </p>
+            <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+              <li>— Append-only cold tier, cheap by default</li>
+              <li>— Entities and relationships derived on accumulation</li>
+              <li>— Graph-informed training export</li>
+              <li>— Live retrieval: deferred</li>
             </ul>
           </SectionReveal>
         </div>

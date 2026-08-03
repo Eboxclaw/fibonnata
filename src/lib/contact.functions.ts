@@ -38,7 +38,7 @@ export const submitContactForm = createServerFn({ method: "POST" })
           {
             to: "fibonnata@proton.me",
             from: emailFrom,
-            subject: `FiboNNata contact: ${data.subject}`,
+            subject: `Fibonnata contact: ${data.subject}`,
             html: `<p><strong>From:</strong> ${escapeHtml(data.name)} &lt;${escapeHtml(
               data.email
             )}&gt;</p><p>${escapeHtml(data.message).replace(/\n/g, "<br/>")}</p>`,
