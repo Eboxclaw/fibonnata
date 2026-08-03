@@ -6,82 +6,81 @@ export const Route = createFileRoute("/about")({
   component: AboutPage,
   head: () => ({
     meta: [
-      { title: "About · FiboNNata" },
+      { title: "About · Fibonnata" },
       {
         name: "description",
         content:
-          "FiboNNata is an experimental research lab building new primitives for AI systems.",
+          "Fibonnata separates four concerns usually tangled together: a portable adapter format, non-training operations on it, a thin middleware wrapper, and a local-first application architecture.",
       },
-      { property: "og:title", content: "About · FiboNNata" },
+      { property: "og:title", content: "About · Fibonnata" },
       {
         property: "og:description",
         content:
-          "FiboNNata is an experimental research lab building new primitives for AI systems.",
+          "Each piece stays narrow on purpose. The format does not assume a runtime. The SDK does not train. The stack does not assume the network is there.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/about" },
+      { property: "og:url", content: "https://fibo-lazy-mind.lovable.app/about" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "/about" }],
+    links: [{ rel: "canonical", href: "https://fibo-lazy-mind.lovable.app/about" }],
   }),
 });
 
 function AboutPage() {
   return (
-    <main className="mx-auto max-w-6xl px-6 pt-32 pb-24">
+    <main className="mx-auto max-w-6xl px-5 pt-28 pb-20 sm:px-6 sm:pt-32 sm:pb-24">
       <SectionHeader
         eyebrow="About"
-        title="We are building a new shape of intelligence."
+        title="Four concerns, deliberately kept apart."
       />
-      <div className="grid gap-16 md:grid-cols-2">
+      <div className="grid gap-10 md:grid-cols-2 md:gap-16">
         <div className="space-y-6 text-base leading-relaxed text-muted-foreground">
           <SectionReveal>
             <p>
-              FiboNNata is an experimental research lab exploring AI
-              infrastructure. Our premise is simple: intelligence shouldn't
-              need everything.
+              Fibonnata separates four things that are usually tangled together: an
+              architecture-agnostic file format for what a model has learned, a small,
+              non-training set of operations for making and combining that knowledge, a
+              thin middleware wrapper for applying it to whatever engine is actually
+              running, and a local-first application architecture underneath all of it.
             </p>
           </SectionReveal>
           <SectionReveal delay={100}>
             <p>
-              We believe the next generation of AI systems will be built from
-              smaller, composable parts: learned capabilities packaged into
-              portable representations, and memory that wakes up only when it
-              is needed.
+              Each piece stays narrow on purpose. The format does not assume a runtime.
+              The SDK does not train. The stack does not assume the network is there.
             </p>
           </SectionReveal>
           <SectionReveal delay={200}>
             <p>
-              This is not another chatbot, assistant, or productivity tool. We
-              are working on the underlying architecture — the protocols,
-              representations, and memory systems that make selective
-              intelligence possible.
+              What holds them together is a single idea: an adapter should outlive the
+              model it was trained on.
             </p>
           </SectionReveal>
         </div>
-        <div className="space-y-6">
+        <div className="space-y-5 sm:space-y-6">
           <SectionReveal delay={100}>
-            <div className="rounded-xl border border-border/60 bg-card p-6">
+            <div className="rounded-xl border border-border/60 bg-card p-5 sm:p-6">
               <h3 className="mb-3 font-display text-lg font-medium text-foreground">
-                What FiboNNata is not
+                What Fibonnata is not
               </h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>— Not a generic AI startup landing page</li>
-                <li>— Not a chatbot or assistant product</li>
-                <li>— Not a model training company</li>
-                <li>— Not a SaaS dashboard</li>
+                <li>— Not an inference engine; it wraps one</li>
+                <li>— Not a training framework; the SDK trains nothing</li>
+                <li>— Not a bespoke binary format; .natech is safetensors</li>
+                <li>— Not a cloud service; the network is optional</li>
               </ul>
             </div>
           </SectionReveal>
           <SectionReveal delay={200}>
-            <div className="rounded-xl border border-border/60 bg-card p-6">
+            <div className="rounded-xl border border-border/60 bg-card p-5 sm:p-6">
               <h3 className="mb-3 font-display text-lg font-medium text-foreground">
-                What we are
+                What it is
               </h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>— AI systems infrastructure / research</li>
-                <li>— Selective learning and lazy memory</li>
-                <li>— Composable, portable intelligence</li>
-                <li>— Experimental and open-ended</li>
+                <li>— A portable adaptation layer for small language models</li>
+                <li>— The Bonnata Stack and its PWA template</li>
+                <li>— The .natech talent file and three operations on it</li>
+                <li>— A reference application: chat, curation, training, evaluation</li>
               </ul>
             </div>
           </SectionReveal>

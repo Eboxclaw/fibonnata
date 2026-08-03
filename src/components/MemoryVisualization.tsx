@@ -2,24 +2,23 @@ import { useEffect, useRef, useState } from "react";
 import { SectionReveal } from "./SectionReveal";
 
 const nodes = [
-  { id: "raw", label: "RAW MEMORY", x: 10, y: 50 },
-  { id: "discover", label: "DISCOVER", x: 30, y: 30 },
-  { id: "store", label: "STORE", x: 30, y: 70 },
-  { id: "query", label: "QUERY", x: 55, y: 50 },
-  { id: "index", label: "INDEX", x: 75, y: 30 },
-  { id: "expand", label: "EXPAND", x: 75, y: 70 },
-  { id: "compile", label: "COMPILE", x: 90, y: 50 },
+  { id: "raw", label: "RAW LOG", x: 10, y: 50 },
+  { id: "entities", label: "ENTITIES", x: 32, y: 26 },
+  { id: "relations", label: "RELATIONS", x: 32, y: 74 },
+  { id: "graph", label: "GRAPH", x: 55, y: 50 },
+  { id: "walk", label: "SUBGRAPH WALK", x: 76, y: 26 },
+  { id: "deferred", label: "LIVE RETRIEVAL (DEFERRED)", x: 76, y: 74 },
+  { id: "dataset", label: "DATASET", x: 92, y: 50 },
 ];
 
 const links: [string, string][] = [
-  ["raw", "discover"],
-  ["raw", "store"],
-  ["discover", "query"],
-  ["store", "query"],
-  ["query", "index"],
-  ["query", "expand"],
-  ["index", "compile"],
-  ["expand", "compile"],
+  ["raw", "entities"],
+  ["raw", "relations"],
+  ["entities", "graph"],
+  ["relations", "graph"],
+  ["graph", "walk"],
+  ["graph", "deferred"],
+  ["walk", "dataset"],
 ];
 
 export function MemoryVisualization() {
@@ -48,12 +47,16 @@ export function MemoryVisualization() {
     <SectionReveal>
       <div
         ref={ref}
-        className="rounded-xl border border-border/60 bg-card p-6 sm:p-10"
+        className="rounded-xl border border-border/60 bg-card p-5 sm:p-8"
       >
-        <h3 className="mb-6 font-display text-lg font-medium text-foreground">
-          Memory wakes up on demand
+        <h3 className="mb-6 font-display text-base font-medium text-foreground sm:text-lg">
+          A graph derived from what accumulates
         </h3>
-        <svg viewBox="0 0 100 100" className="w-full overflow-visible" aria-hidden="true">
+        <svg
+          viewBox="0 0 100 100"
+          className="w-full overflow-visible"
+          aria-hidden="true"
+        >
           {links.map(([a, b], i) => {
             const na = nodeMap.get(a)!;
             const nb = nodeMap.get(b)!;
@@ -66,6 +69,7 @@ export function MemoryVisualization() {
                 y2={nb.y}
                 stroke="currentColor"
                 strokeWidth="0.4"
+                strokeDasharray={b === "deferred" ? "2 2" : undefined}
                 className={`text-border transition-all duration-700 ${
                   awake ? "opacity-100" : "opacity-0"
                 }`}
@@ -76,14 +80,20 @@ export function MemoryVisualization() {
           {nodes.map((n, i) => (
             <g key={n.id} transform={`translate(${n.x},${n.y})`}>
               <circle
-                r="3"
+                r={n.id === "deferred" ? 2 : 3}
                 fill="currentColor"
                 className={`transition-all duration-500 ${
-                  awake ? "text-foreground" : "text-border"
+                  awake && n.id !== "deferred" ? "text-foreground" : "text-border"
                 }`}
                 style={{ transitionDelay: `${i * 120 + 200}ms` }}
               />
-              <text y="5" x="4" fontSize="3.5" className="fill-muted-foreground font-mono">
+              <text
+                y={n.y > 60 ? 8 : -5}
+                x={n.x > 80 ? -4 : 4}
+                textAnchor={n.x > 80 ? "end" : "start"}
+                fontSize="3.2"
+                className="fill-muted-foreground font-mono"
+              >
                 {n.label}
               </text>
             </g>

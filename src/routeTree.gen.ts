@@ -14,6 +14,9 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FiboRouteImport } from './routes/fibo'
 import { Route as LazyMemoryRouteImport } from './routes/lazy-memory'
+import { Route as NatechRouteImport } from './routes/natech'
+import { Route as SdkRouteImport } from './routes/sdk'
+import { Route as StackRouteImport } from './routes/stack'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +43,21 @@ const LazyMemoryRoute = LazyMemoryRouteImport.update({
   path: '/lazy-memory',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NatechRoute = NatechRouteImport.update({
+  id: '/natech',
+  path: '/natech',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SdkRoute = SdkRouteImport.update({
+  id: '/sdk',
+  path: '/sdk',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StackRoute = StackRouteImport.update({
+  id: '/stack',
+  path: '/stack',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +65,9 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/fibo': typeof FiboRoute
   '/lazy-memory': typeof LazyMemoryRoute
+  '/natech': typeof NatechRoute
+  '/sdk': typeof SdkRoute
+  '/stack': typeof StackRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +75,9 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/fibo': typeof FiboRoute
   '/lazy-memory': typeof LazyMemoryRoute
+  '/natech': typeof NatechRoute
+  '/sdk': typeof SdkRoute
+  '/stack': typeof StackRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +86,41 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/fibo': typeof FiboRoute
   '/lazy-memory': typeof LazyMemoryRoute
+  '/natech': typeof NatechRoute
+  '/sdk': typeof SdkRoute
+  '/stack': typeof StackRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/contact' | '/fibo' | '/lazy-memory'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/fibo'
+    | '/lazy-memory'
+    | '/natech'
+    | '/sdk'
+    | '/stack'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contact' | '/fibo' | '/lazy-memory'
-  id: '__root__' | '/' | '/about' | '/contact' | '/fibo' | '/lazy-memory'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/fibo'
+    | '/lazy-memory'
+    | '/natech'
+    | '/sdk'
+    | '/stack'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/fibo'
+    | '/lazy-memory'
+    | '/natech'
+    | '/sdk'
+    | '/stack'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +129,9 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   FiboRoute: typeof FiboRoute
   LazyMemoryRoute: typeof LazyMemoryRoute
+  NatechRoute: typeof NatechRoute
+  SdkRoute: typeof SdkRoute
+  StackRoute: typeof StackRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -116,6 +171,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LazyMemoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/natech': {
+      id: '/natech'
+      path: '/natech'
+      fullPath: '/natech'
+      preLoaderRoute: typeof NatechRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sdk': {
+      id: '/sdk'
+      path: '/sdk'
+      fullPath: '/sdk'
+      preLoaderRoute: typeof SdkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stack': {
+      id: '/stack'
+      path: '/stack'
+      fullPath: '/stack'
+      preLoaderRoute: typeof StackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -125,6 +201,9 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   FiboRoute: FiboRoute,
   LazyMemoryRoute: LazyMemoryRoute,
+  NatechRoute: NatechRoute,
+  SdkRoute: SdkRoute,
+  StackRoute: StackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
