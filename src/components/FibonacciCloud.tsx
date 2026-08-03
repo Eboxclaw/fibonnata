@@ -64,6 +64,9 @@ function buildScene(
   THREE: typeof import("three"),
   reducedMotion: boolean
 ) {
+  const isSmallScreen = window.matchMedia("(max-width: 767px)").matches;
+  const isTouch = window.matchMedia("(pointer: coarse)").matches;
+
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
     60,
@@ -73,12 +76,12 @@ function buildScene(
   );
   camera.position.z = 4;
 
-  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: !isSmallScreen });
   renderer.setSize(container.clientWidth, container.clientHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isSmallScreen ? 1.5 : 2));
   container.appendChild(renderer.domElement);
 
-  const count = 1200;
+  const count = isSmallScreen ? 450 : 1200;
   const positions = new Float32Array(count * 3);
   const pts = fibonacciSpherePoints(count, 2.2);
   for (const [i, p] of pts.entries()) {
@@ -92,7 +95,7 @@ function buildScene(
 
   const material = new THREE.PointsMaterial({
     color: 0x8a8a8a,
-    size: 0.025,
+    size: isSmallScreen ? 0.035 : 0.025,
     transparent: true,
     opacity: 0.55,
     sizeAttenuation: true,
@@ -107,7 +110,9 @@ function buildScene(
     mouseX = (e.clientX / window.innerWidth - 0.5) * 0.3;
     mouseY = (e.clientY / window.innerHeight - 0.5) * 0.3;
   };
-  window.addEventListener("mousemove", onMove);
+  const useParallax = !isTouch && !isSmallScreen;
+  if (useParallax) window.addEventListener("mousemove", onMove);
+
 
   let raf = 0;
   const animate = () => {
