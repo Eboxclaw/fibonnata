@@ -30,7 +30,7 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   return (
-    <main className="mx-auto max-w-3xl px-6 pt-32 pb-24">
+    <main className="mx-auto max-w-3xl px-5 sm:px-6 pt-28 pb-20 sm:pt-32 sm:pb-24">
       <SectionHeader
         eyebrow="Contact"
         title="Reach out."
