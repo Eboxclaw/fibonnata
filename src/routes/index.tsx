@@ -48,7 +48,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "An architecture-agnostic file format for trained adapters, operations for combining and retargeting them, and middleware that wraps existing inference engines.",
+          "Fibonnata is a portable adaptation layer and local-first runtime architecture for small language models: the .natech format, a three-operation SDK, and the Bonnata Stack.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://fibo-lazy-mind.lovable.app/" },

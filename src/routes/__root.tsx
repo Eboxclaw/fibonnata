@@ -92,7 +92,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Fibonnata is a portable adaptation layer and local-first runtime architecture for small language models: the .natech talent file, a three-operation SDK, and the Bonnata Stack.",
+          "Fibonnata is a portable adaptation layer and local-first runtime architecture for small language models: the .natech format, a three-operation SDK, and the Bonnata Stack.",
       },
       { name: "author", content: "Fibonnata" },
       {
@@ -102,17 +102,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:description",
         content:
-          "An architecture-agnostic file format for trained adapters, operations for combining and retargeting them, and middleware that wraps existing inference engines.",
+          "Fibonnata is a portable adaptation layer and local-first runtime architecture for small language models: the .natech format, a three-operation SDK, and the Bonnata Stack.",
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Fibonnata" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@fibonnata" },
       { name: "twitter:title", content: "Fibonnata · A portable adaptation layer for language models" },
-      { name: "twitter:description", content: "An architecture-agnostic file format for trained adapters, plus middleware that wraps existing inference engines." },
+      { name: "twitter:description", content: "Fibonnata is a portable adaptation layer and local-first runtime architecture for small language models: the .natech format, a three-operation SDK, and the Bonnata Stack." },
 
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/76b052f3-fdbe-4785-8512-691608651006/id-preview-3817f1f3--d17b9dfb-5d8c-49fe-8ff2-b054d9cd1d0c.lovable.app-1785628937874.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/76b052f3-fdbe-4785-8512-691608651006/id-preview-3817f1f3--d17b9dfb-5d8c-49fe-8ff2-b054d9cd1d0c.lovable.app-1785628937874.png" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/2e4c9f24-b549-4db7-adf8-0ba736827142" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/2e4c9f24-b549-4db7-adf8-0ba736827142" },
     ],
     links: [
       {
