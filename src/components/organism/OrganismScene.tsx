@@ -56,6 +56,8 @@ export function OrganismScene({ progress, className = "" }: OrganismSceneProps) 
 
         dispose = () => {
           window.removeEventListener("resize", onResize);
+          ro.disconnect();
+
           document.removeEventListener("visibilitychange", onVisibility);
           window.removeEventListener("pointermove", onPointer);
           handle.dispose();
