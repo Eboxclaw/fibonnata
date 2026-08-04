@@ -36,11 +36,8 @@ const chapters: Chapter[] = [
   },
 ];
 
-export const StoryChapters = forwardRef<HTMLDivElement>(function StoryChapters(
-  _props,
-  _ref
-) {
-  const { ref, progress } = useScrollProgress<HTMLDivElement>();
+export function StoryChapters() {
+
 
   return (
     <div ref={ref} className="relative">
