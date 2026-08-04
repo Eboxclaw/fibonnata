@@ -74,7 +74,7 @@ const CORE_FRAG = /* glsl */ `
     float soft = smoothstep(0.5, 0.12, r);
     float ember = step(0.86, vSeed) * (0.25 + 0.6 * uGrowth);
     vec3 c = mix(uColor, uEmber, ember);
-    gl_FragColor = vec4(c, soft * vAlpha * (0.35 + 0.45 * uGrowth));
+    gl_FragColor = vec4(c, soft * vAlpha * (0.22 + 0.28 * uGrowth));
   }
 `;
 
