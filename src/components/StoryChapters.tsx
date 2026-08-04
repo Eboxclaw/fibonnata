@@ -37,6 +37,8 @@ const chapters: Chapter[] = [
 ];
 
 export function StoryChapters() {
+  const { ref, progress } = useScrollProgress<HTMLDivElement>();
+
 
 
   return (
