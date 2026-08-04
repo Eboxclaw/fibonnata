@@ -3,6 +3,8 @@ import { Hero } from "@/components/Hero";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ResearchGrid } from "@/components/ResearchGrid";
 import { SectionReveal } from "@/components/SectionReveal";
+import { StoryChapters } from "@/components/StoryChapters";
+
 
 const pillars = [
   {
