@@ -135,10 +135,13 @@ export function createOrganism(
     uniforms: {
       uGrowth: { value: 0 },
       uTime: { value: 0 },
-      uSize: { value: small ? 2.6 : 2.2 },
+      uSize: { value: small ? 0.014 : 0.011 },
       uDpr: { value: dpr },
+      uViewH: { value: container.clientHeight * dpr },
+      uFovTan: { value: Math.tan((55 * Math.PI) / 360) },
       uColor: { value: new THREE.Color(0x2b2b2b) },
       uEmber: { value: new THREE.Color(0xb0632c) },
+
     },
   });
   const core = new THREE.Points(coreGeo, coreMat);
