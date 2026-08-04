@@ -1,6 +1,6 @@
-import { forwardRef } from "react";
 import { OrganismScene } from "./organism/OrganismScene";
 import { useScrollProgress } from "@/hooks/use-scroll-progress";
+
 
 interface Chapter {
   index: string;
