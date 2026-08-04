@@ -13,8 +13,9 @@ export interface CameraKey {
  * a push-in during fusion, then a pull-back reveal.
  */
 export const CAMERA_PATH: CameraKey[] = [
-  { at: 0.0, position: [0, 0.2, 7.6], target: [0, 0, 0], fov: 55 },
-  { at: 0.25, position: [4.6, -1.4, 6.2], target: [0, 0.1, 0], fov: 52 },
+  { at: 0.0, position: [0, 0.2, 7.6], target: [-1.9, 0.1, 0], fov: 55 },
+  { at: 0.25, position: [4.6, -1.4, 6.2], target: [-0.8, 0.1, 0], fov: 52 },
+
   { at: 0.5, position: [-4.6, 2.2, 5.6], target: [0, 0, 0], fov: 48 },
   { at: 0.75, position: [-1.4, 0.6, 4.6], target: [0, 0, 0], fov: 46 },
   { at: 1.0, position: [2.0, 1.6, 9.0], target: [0, 0, 0], fov: 50 },
