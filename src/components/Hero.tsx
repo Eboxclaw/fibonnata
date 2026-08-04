@@ -1,12 +1,13 @@
 import { Link } from "@tanstack/react-router";
-import { FibonacciCloud } from "./FibonacciCloud";
+import { OrganismScene } from "./organism/OrganismScene";
 
 export function Hero() {
   return (
     <section className="relative flex min-h-[88svh] flex-col justify-center overflow-hidden px-5 pt-28 pb-16 sm:px-6">
-      <div className="absolute inset-0 -z-10">
-        <FibonacciCloud />
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <OrganismScene progress={0.06} className="absolute inset-0 h-full w-full" />
       </div>
+
 
       <div className="mx-auto w-full max-w-6xl">
         <p className="mb-6 font-mono text-[11px] uppercase tracking-widest text-muted-foreground sm:text-xs">
