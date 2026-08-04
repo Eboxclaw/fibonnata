@@ -47,6 +47,10 @@ export function OrganismScene({ progress, className = "" }: OrganismSceneProps) 
         const isTouch = window.matchMedia("(pointer: coarse)").matches;
 
         window.addEventListener("resize", onResize);
+        const ro = new ResizeObserver(onResize);
+        ro.observe(containerRef.current);
+        onResize();
+
         document.addEventListener("visibilitychange", onVisibility);
         if (!isTouch) window.addEventListener("pointermove", onPointer);
 
