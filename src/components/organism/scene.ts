@@ -47,7 +47,11 @@ const CORE_VERT = /* glsl */ `
 
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     gl_Position = projectionMatrix * mv;
-    gl_PointSize = uSize * uDpr * (1.0 + uGrowth * 0.5) * appear * (300.0 / max(0.001, -mv.z));
+    // world-space point diameter projected to device pixels
+    gl_PointSize = uSize * (1.0 + uGrowth * 0.6) * appear
+      * (uViewH * 0.5) / max(0.001, uFovTan * -mv.z);
+    gl_PointSize = clamp(gl_PointSize, 0.0, 6.0 * uDpr);
+
     vAlpha = appear;
     vSeed = aSeed;
   }
