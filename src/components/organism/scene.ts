@@ -29,6 +29,9 @@ const CORE_VERT = /* glsl */ `
   uniform float uTime;
   uniform float uSize;
   uniform float uDpr;
+  uniform float uViewH;
+  uniform float uFovTan;
+
   varying float vAlpha;
   varying float vSeed;
 
