@@ -261,6 +261,8 @@ export function createOrganism(
     );
     if (Math.abs(camera.fov - shot.fov) > 0.01) {
       camera.fov = shot.fov;
+      coreMat.uniforms['uFovTan']!.value = Math.tan((shot.fov * Math.PI) / 360);
+
       camera.updateProjectionMatrix();
     }
     camTarget.set(shot.target[0], shot.target[1], shot.target[2]);
