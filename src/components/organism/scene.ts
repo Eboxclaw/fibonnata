@@ -279,6 +279,8 @@ export function createOrganism(
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
+    coreMat.uniforms['uViewH']!.value = h * dpr;
+
   };
 
   raf = requestAnimationFrame(frame);
