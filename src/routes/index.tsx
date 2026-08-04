@@ -74,7 +74,10 @@ function HomePage() {
         <ResearchGrid />
       </section>
 
+      <StoryChapters />
+
       <section className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
+
         <SectionHeader
           eyebrow="System architecture"
           title="Four concerns, each with a narrow job."
