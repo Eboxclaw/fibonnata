@@ -78,4 +78,4 @@ export function StoryChapters() {
       </div>
     </div>
   );
-});
+}
