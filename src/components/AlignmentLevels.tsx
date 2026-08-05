@@ -17,7 +17,7 @@ const levels = [
     level: "L3",
     method: "Optimal transport",
     when: "Different families, structural overlap",
-    cost: "~5–30 seconds, CPU",
+    cost: "~5 to 30 seconds, CPU",
   },
   {
     level: "L4",

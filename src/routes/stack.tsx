@@ -122,7 +122,7 @@ function StackPage() {
       <SectionHeader
         eyebrow="The architecture"
         title="The Bonnata Stack."
-        subtitle="A local-first, browser-based system where an application runs its own models, stores its own data, and treats the network as optional. The Bonnata PWA Template is the reusable scaffold that implements it: the application shell, the storage layer, the worker boundary, and two open slots — one for an AI runtime, one for memory."
+        subtitle="A local-first, browser-based system where an application runs its own models, stores its own data, and treats the network as optional. The Bonnata PWA Template is the reusable scaffold that implements it: the application shell, the storage layer, the worker boundary, and two open slots: one for an AI runtime, one for memory."
       />
 
       <div className="mb-12 grid gap-5 sm:gap-6 md:grid-cols-2">

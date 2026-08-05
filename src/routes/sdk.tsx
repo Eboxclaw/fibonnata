@@ -8,7 +8,7 @@ const pipeline = [
   {
     label: "MAKE",
     detail:
-      "Import an adapter that already exists — PEFT, Diffusers, GGUF, MLX — role-map it, and package it as a talent file. It never trains anything.",
+      "Import an adapter that already exists, whether PEFT, Diffusers, GGUF or MLX, role-map it, and package it as a talent file. It never trains anything.",
   },
   {
     label: "FUSE",
@@ -35,7 +35,7 @@ export const Route = createFileRoute("/sdk")({
       {
         name: "description",
         content:
-          "The Fibonnata SDK has exactly three operations — make, fuse and compile — and trains nothing. It is middleware that wraps an existing inference engine and adds compilation, compatibility checks and caching.",
+          "The Fibonnata SDK has exactly three operations, make, fuse and compile, and trains nothing. It is middleware that wraps an existing inference engine and adds compilation, compatibility checks and caching.",
       },
       { property: "og:title", content: "Fibonnata SDK · make, fuse, compile" },
       {

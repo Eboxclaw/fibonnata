@@ -10,7 +10,7 @@ export const Route = createFileRoute("/about")({
       {
         name: "description",
         content:
-          "Fibonnata separates four concerns usually tangled together: a portable adapter format, non-training operations on it, a thin middleware wrapper, and a local-first application architecture.",
+          "Fibonnata separates four concerns usually tangled together: a format that assumes no runtime, operations that never train, middleware that wraps the engine already running, and a local-first runtime where the network is optional.",
       },
       { property: "og:title", content: "About · Fibonnata" },
       {
@@ -64,10 +64,10 @@ function AboutPage() {
                 What Fibonnata is not
               </h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>— Not an inference engine; it wraps one</li>
-                <li>— Not a training framework; the SDK trains nothing</li>
-                <li>— Not a bespoke binary format; .natech is safetensors</li>
-                <li>— Not a cloud service; the network is optional</li>
+                <li>Not an inference engine. It wraps one.</li>
+                <li>Not a training framework. The SDK trains nothing.</li>
+                <li>Not a bespoke binary format. .natech is safetensors.</li>
+                <li>Not a cloud service. The network is optional.</li>
               </ul>
             </div>
           </SectionReveal>
@@ -77,10 +77,10 @@ function AboutPage() {
                 What it is
               </h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>— A portable adaptation layer for small language models</li>
-                <li>— The Bonnata Stack and its PWA template</li>
-                <li>— The .natech talent file and three operations on it</li>
-                <li>— A reference application: chat, curation, training, evaluation</li>
+                <li>A portable adaptation layer for small language models</li>
+                <li>The Bonnata Stack and its PWA template</li>
+                <li>The .natech talent file and three operations on it</li>
+                <li>A reference application: chat, curation, training, evaluation</li>
               </ul>
             </div>
           </SectionReveal>

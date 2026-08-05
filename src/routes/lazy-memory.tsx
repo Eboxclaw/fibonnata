@@ -8,7 +8,7 @@ const steps = [
   {
     label: "CAPTURE",
     detail:
-      "Every interaction — a chat turn, an evaluation, a correction — is appended to a cold, append-only tier. Capture is cheap and happens by default.",
+      "Every interaction, a chat turn, an evaluation, a correction, is appended to a cold, append-only tier. Capture is cheap and happens by default.",
   },
   {
     label: "DERIVE GRAPH",
@@ -18,7 +18,7 @@ const steps = [
   {
     label: "TRAINING EXPORT",
     detail:
-      "Walk a subgraph and bundle a related cluster into a single training set — far better data than a flat transcript.",
+      "Walk a subgraph and bundle a related cluster into a single training set, far better data than a flat transcript.",
   },
   {
     label: "CURATED DATASET",
@@ -93,10 +93,10 @@ function LazyMemoryPage() {
               anything worth querying.
             </p>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              <li>— Append-only cold tier, cheap by default</li>
-              <li>— Entities and relationships derived on accumulation</li>
-              <li>— Graph-informed training export</li>
-              <li>— Live retrieval: deferred</li>
+              <li>Append-only cold tier, cheap by default</li>
+              <li>Entities and relationships derived on accumulation</li>
+              <li>Graph-informed training export</li>
+              <li>Live retrieval: deferred</li>
             </ul>
           </SectionReveal>
         </div>

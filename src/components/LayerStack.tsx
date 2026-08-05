@@ -26,7 +26,7 @@ export function LayerStack({ layers }: { layers: StackLayer[] }) {
                   key={item}
                   className="min-w-0 break-words font-mono text-xs leading-relaxed text-muted-foreground"
                 >
-                  — {item}
+                  {item}
                 </li>
               ))}
             </ul>
