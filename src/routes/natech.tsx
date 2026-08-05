@@ -85,9 +85,9 @@ function NatechPage() {
               Tensor names are roles, not source parameter paths.
             </h3>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              A source adapter names its tensors after one model's modules —
-              <span className="font-mono"> model.layers.4.self_attn.q_proj</span> — which
-              means nothing on a different architecture. A .natech file renames every
+              A source adapter names its tensors after one model's modules, for
+              example<span className="font-mono"> model.layers.4.self_attn.q_proj</span>,
+              which means nothing on a different architecture. A .natech file renames every
               tensor to its role. Every transformer has something that plays each part,
               even where the module is called something else. A tensor a binder cannot
               resolve is kept and tagged <span className="font-mono">unmapped</span>,
@@ -124,7 +124,7 @@ function NatechPage() {
                   key={f}
                   className="min-w-0 break-words font-mono text-xs text-muted-foreground"
                 >
-                  — {f}
+                  {f}
                 </li>
               ))}
             </ul>
