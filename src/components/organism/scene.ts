@@ -202,8 +202,9 @@ export async function createOrganism(
       },
     });
 
-    const aOrder = attribute("aOrder", "float");
-    const aSeed = attribute("aSeed", "float");
+    type FloatNode = ReturnType<typeof float>;
+    const aOrder = attribute("aOrder", "float") as unknown as FloatNode;
+    const aSeed = attribute("aSeed", "float") as unknown as FloatNode;
 
     const appear = smoothstep(aOrder.sub(0.08), aOrder.add(0.02), gGrowth);
     const radius = mix(float(0.22), float(1.0), smoothstep(0.0, 0.9, gGrowth));
@@ -217,7 +218,7 @@ export async function createOrganism(
 
     const colorBase = vec3(0.168, 0.168, 0.168);
     const colorEmber = vec3(0.69, 0.388, 0.173);
-    const ember = step(0.86, aSeed).mul(float(0.25).add(gGrowth.mul(0.6)));
+    const ember = (step(0.86, aSeed) as unknown as FloatNode).mul(float(0.25).add(gGrowth.mul(0.6)));
 
     const mat = new (THREE as unknown as {
       PointsNodeMaterial: new (p: Record<string, unknown>) => import("three").Material & {
