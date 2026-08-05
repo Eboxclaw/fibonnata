@@ -1,6 +1,7 @@
 import { sampleCamera } from "./camera";
 
 type THREENS = typeof import("three");
+type TSLNS = typeof import("three/tsl");
 
 export interface OrganismHandle {
   setProgress: (p: number) => void;
@@ -53,7 +54,7 @@ const CORE_VERT = /* glsl */ `
     // world-space point diameter projected to device pixels
     gl_PointSize = uSize * (1.0 + uGrowth * 0.6) * appear
       * (uViewH * 0.5) / max(0.001, uFovTan * -mv.z);
-    gl_PointSize = clamp(gl_PointSize, 0.0, 6.0 * uDpr);
+    gl_PointSize = clamp(gl_PointSize, 0.0, 10.0 * uDpr);
 
     vAlpha = appear;
     vSeed = aSeed;
@@ -74,17 +75,24 @@ const CORE_FRAG = /* glsl */ `
     float soft = smoothstep(0.5, 0.12, r);
     float ember = step(0.86, vSeed) * (0.25 + 0.6 * uGrowth);
     vec3 c = mix(uColor, uEmber, ember);
-    gl_FragColor = vec4(c, soft * vAlpha * (0.32 + 0.38 * uGrowth));
+    gl_FragColor = vec4(c, soft * vAlpha * (0.4 + 0.42 * uGrowth));
   }
 `;
 
-export function createOrganism(
+export interface OrganismOptions {
+  reducedMotion: boolean;
+  /** when provided, the scene renders through the WebGPU backend */
+  gpu?: { tsl: TSLNS };
+}
+
+export async function createOrganism(
   container: HTMLElement,
   THREE: THREENS,
-  opts: { reducedMotion: boolean }
-): OrganismHandle {
+  opts: OrganismOptions
+): Promise<OrganismHandle> {
   const small = window.matchMedia("(max-width: 767px)").matches;
   const dpr = Math.min(window.devicePixelRatio || 1, small ? 1.5 : 2);
+  const gpu = opts.gpu;
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
@@ -95,7 +103,30 @@ export function createOrganism(
   );
   camera.position.set(0, 0.2, 6.4);
 
-  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: !small });
+  type AnyRenderer = {
+    setPixelRatio: (v: number) => void;
+    setSize: (w: number, h: number) => void;
+    domElement: HTMLCanvasElement;
+    render: (s: unknown, c: unknown) => unknown;
+    dispose: () => void;
+  };
+
+  let renderer: AnyRenderer;
+  if (gpu) {
+    const GPUCtor = (THREE as unknown as {
+      WebGPURenderer: new (p: Record<string, unknown>) => AnyRenderer & {
+        init: () => Promise<void>;
+      };
+    }).WebGPURenderer;
+    const r = new GPUCtor({ alpha: true, antialias: !small });
+    await r.init();
+    renderer = r;
+  } else {
+    renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      antialias: !small,
+    }) as unknown as AnyRenderer;
+  }
   renderer.setPixelRatio(dpr);
   renderer.setSize(container.clientWidth, container.clientHeight);
   renderer.domElement.style.width = "100%";
@@ -114,7 +145,7 @@ export function createOrganism(
   for (let i = 0; i < count; i++) {
     const p = base[i]!;
     // shell thickness grows outward with index so growth reads as "getting bulkier"
-    const jitter = 0.72 + 0.28 * ((i * 37) % 100) / 100;
+    const jitter = 0.72 + (0.28 * ((i * 37) % 100)) / 100;
     positions[i * 3] = p[0] * 2.0 * jitter;
     positions[i * 3 + 1] = p[1] * 2.0 * jitter;
     positions[i * 3 + 2] = p[2] * 2.0 * jitter;
@@ -127,24 +158,118 @@ export function createOrganism(
   coreGeo.setAttribute("aOrder", new THREE.BufferAttribute(order, 1));
   coreGeo.setAttribute("aSeed", new THREE.BufferAttribute(seed, 1));
 
-  const coreMat = new THREE.ShaderMaterial({
-    vertexShader: CORE_VERT,
-    fragmentShader: CORE_FRAG,
-    transparent: true,
-    depthWrite: false,
-    uniforms: {
-      uGrowth: { value: 0 },
-      uTime: { value: 0 },
-      uSize: { value: small ? 0.014 : 0.011 },
-      uDpr: { value: dpr },
-      uViewH: { value: container.clientHeight * dpr },
-      uFovTan: { value: Math.tan((55 * Math.PI) / 360) },
-      uColor: { value: new THREE.Color(0x2b2b2b) },
-      uEmber: { value: new THREE.Color(0xb0632c) },
+  const pointSize = small ? 0.026 : 0.02;
 
-    },
-  });
+  // growth/time uniforms shared by both backends
+  const uGrowth = { value: 0 };
+  const uTime = { value: 0 };
+
+  let coreMat: import("three").Material;
+  let setViewH: (h: number) => void = () => {};
+  let setFovTan: (t: number) => void = () => {};
+
+  if (gpu) {
+    const {
+      Fn,
+      attribute,
+      uniform,
+      positionLocal,
+      float,
+      vec3,
+      vec4,
+      sin,
+      cos,
+      mix,
+      smoothstep,
+      step,
+      uv,
+      length,
+    } = gpu.tsl;
+
+    const gGrowth = uniform(0);
+    const gTime = uniform(0);
+    // keep the plain objects in sync with the TSL uniforms
+    Object.defineProperty(uGrowth, "value", {
+      get: () => gGrowth.value,
+      set: (v: number) => {
+        gGrowth.value = v;
+      },
+    });
+    Object.defineProperty(uTime, "value", {
+      get: () => gTime.value,
+      set: (v: number) => {
+        gTime.value = v;
+      },
+    });
+
+    type FloatNode = ReturnType<typeof float>;
+    const aOrder = attribute("aOrder", "float") as unknown as FloatNode;
+    const aSeed = attribute("aSeed", "float") as unknown as FloatNode;
+
+    const appear = smoothstep(aOrder.sub(0.08), aOrder.add(0.02), gGrowth);
+    const radius = mix(float(0.22), float(1.0), smoothstep(0.0, 0.9, gGrowth));
+    const breathe = float(1.0).add(sin(gTime.mul(0.6).add(aSeed.mul(6.2831))).mul(0.025));
+    const wobbleAmt = float(1.0).sub(gGrowth.mul(0.6)).mul(0.09);
+    const wobble = vec3(
+      sin(gTime.mul(0.5).add(aSeed.mul(12.0))),
+      cos(gTime.mul(0.43).add(aSeed.mul(9.0))),
+      sin(gTime.mul(0.37).add(aSeed.mul(15.0)))
+    ).mul(wobbleAmt);
+
+    const colorBase = vec3(0.168, 0.168, 0.168);
+    const colorEmber = vec3(0.69, 0.388, 0.173);
+    const ember = (step(0.86, aSeed) as unknown as FloatNode).mul(float(0.25).add(gGrowth.mul(0.6)));
+
+    const mat = new (THREE as unknown as {
+      PointsNodeMaterial: new (p: Record<string, unknown>) => import("three").Material & {
+        positionNode: unknown;
+        sizeNode: unknown;
+        colorNode: unknown;
+        opacityNode: unknown;
+        sizeAttenuation: boolean;
+      };
+    }).PointsNodeMaterial({ transparent: true, depthWrite: false });
+
+    mat.sizeAttenuation = true;
+    mat.positionNode = positionLocal.mul(radius).mul(breathe).add(wobble);
+    mat.sizeNode = float(pointSize * 5.5)
+      .mul(float(1.0).add(gGrowth.mul(0.6)))
+      .mul(appear);
+    mat.colorNode = mix(colorBase, colorEmber, ember);
+    mat.opacityNode = Fn(() => {
+      const r = length(uv().sub(0.5));
+      const soft = smoothstep(0.5, 0.12, r);
+      return soft.mul(appear).mul(float(0.4).add(gGrowth.mul(0.42)));
+    })();
+    coreMat = mat;
+  } else {
+    const mat = new THREE.ShaderMaterial({
+      vertexShader: CORE_VERT,
+      fragmentShader: CORE_FRAG,
+      transparent: true,
+      depthWrite: false,
+      uniforms: {
+        uGrowth,
+        uTime,
+        uSize: { value: pointSize },
+        uDpr: { value: dpr },
+        uViewH: { value: container.clientHeight * dpr },
+        uFovTan: { value: Math.tan((55 * Math.PI) / 360) },
+        uColor: { value: new THREE.Color(0x2b2b2b) },
+        uEmber: { value: new THREE.Color(0xb0632c) },
+      },
+    });
+    setViewH = (h) => {
+      mat.uniforms['uViewH']!.value = h;
+    };
+    setFovTan = (t) => {
+      mat.uniforms['uFovTan']!.value = t;
+    };
+    coreMat = mat;
+  }
+
   const core = new THREE.Points(coreGeo, coreMat);
+  core.frustumCulled = false;
   group.add(core);
 
   // ---- filaments between near neighbours -------------------------------
@@ -173,10 +298,10 @@ export function createOrganism(
     group.add(links);
   }
 
-  // ---- adapter shards that get eaten -----------------------------------
+  // ---- adapter and LoRA shards that get equipped ------------------------
   const shardCount = small ? 8 : 14;
   const shards: import("three").Mesh[] = [];
-  const shardGeo = new THREE.TetrahedronGeometry(0.13);
+  const shardGeo = new THREE.OctahedronGeometry(0.28);
   for (let i = 0; i < shardCount; i++) {
     const mat = new THREE.MeshBasicMaterial({
       color: i % 4 === 0 ? 0xb0632c : 0x3a3a3a,
@@ -199,50 +324,50 @@ export function createOrganism(
 
   // ---- state -----------------------------------------------------------
   let progress = 0;
-  let rendered = -1;
   let pointerX = 0;
   let pointerY = 0;
   let px = 0;
   let py = 0;
   let active = true;
   let raf = 0;
+  let disposed = false;
   const clock = new THREE.Clock();
   const camTarget = new THREE.Vector3();
   const tmp = new THREE.Vector3();
 
-  const smoothstep = (e0: number, e1: number, x: number) => {
+  const smoothstepJs = (e0: number, e1: number, x: number) => {
     const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0)));
     return t * t * (3 - 2 * t);
   };
 
   const frame = () => {
     raf = requestAnimationFrame(frame);
-    if (!active) return;
+    if (!active || disposed) return;
 
     const t = clock.getElapsedTime();
     const growth = progress;
 
-    coreMat.uniforms['uGrowth']!.value = growth;
-    coreMat.uniforms['uTime']!.value = opts.reducedMotion ? 0 : t;
+    uGrowth.value = growth;
+    uTime.value = opts.reducedMotion ? 0 : t;
 
-    if (linkMat) linkMat.opacity = 0.03 + 0.13 * smoothstep(0.35, 1, growth);
-    if (links) links.scale.setScalar(0.22 + 0.78 * smoothstep(0, 0.9, growth));
+    if (linkMat) linkMat.opacity = 0.04 + 0.2 * smoothstepJs(0.35, 1, growth);
+    if (links) links.scale.setScalar(0.22 + 0.78 * smoothstepJs(0, 0.9, growth));
 
-    // shards fly in and get absorbed during the middle of the story
+    // shards fly in and are equipped during the middle of the story
     for (const m of shards) {
       const phase = m.userData['phase'] as number;
       const startAt = 0.3 + phase * 0.28;
-      const eat = smoothstep(startAt, startAt + 0.18, growth);
+      const eat = smoothstepJs(startAt, startAt + 0.18, growth);
       const from = m.userData['from'] as import("three").Vector3;
-      tmp.copy(from).multiplyScalar(1 - eat);
+      tmp.copy(from).multiplyScalar(1 - eat * 0.86);
       m.position.copy(tmp);
       const mat = m.material as import("three").MeshBasicMaterial;
-      mat.opacity = Math.min(smoothstep(startAt - 0.08, startAt, growth), 1 - eat) * 0.8;
+      mat.opacity = Math.min(smoothstepJs(startAt - 0.08, startAt, growth), 1 - eat * 0.55) * 0.85;
       if (!opts.reducedMotion) {
         m.rotation.x += 0.004;
         m.rotation.y += 0.006;
       }
-      m.scale.setScalar(1 - eat * 0.6);
+      m.scale.setScalar(1 - eat * 0.35);
     }
 
     if (!opts.reducedMotion) {
@@ -261,15 +386,13 @@ export function createOrganism(
     );
     if (Math.abs(camera.fov - shot.fov) > 0.01) {
       camera.fov = shot.fov;
-      coreMat.uniforms['uFovTan']!.value = Math.tan((shot.fov * Math.PI) / 360);
-
+      setFovTan(Math.tan((shot.fov * Math.PI) / 360));
       camera.updateProjectionMatrix();
     }
     camTarget.set(shot.target[0], shot.target[1], shot.target[2]);
     camera.lookAt(camTarget);
 
     renderer.render(scene, camera);
-    rendered = growth;
   };
 
   const resize = () => {
@@ -279,8 +402,7 @@ export function createOrganism(
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
-    coreMat.uniforms['uViewH']!.value = h * dpr;
-
+    setViewH(h * dpr);
   };
 
   raf = requestAnimationFrame(frame);
@@ -288,7 +410,6 @@ export function createOrganism(
   return {
     setProgress: (p: number) => {
       progress = Math.min(1, Math.max(0, p));
-      void rendered;
     },
     setPointer: (x: number, y: number) => {
       pointerX = x;
@@ -300,6 +421,7 @@ export function createOrganism(
     },
     resize,
     dispose: () => {
+      disposed = true;
       cancelAnimationFrame(raf);
       coreGeo.dispose();
       coreMat.dispose();

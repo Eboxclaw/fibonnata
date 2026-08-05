@@ -22,7 +22,7 @@ const pillars = [
   {
     eyebrow: "Middleware",
     title: "Fibonnata SDK",
-    body: "Three operations — make, fuse, compile — wrapped around whatever inference engine is actually running the model. None of them train anything.",
+    body: "Three operations, make, fuse and compile, wrapped around whatever inference engine is actually running the model. None of them train anything.",
     to: "/sdk" as const,
   },
   {
@@ -81,7 +81,7 @@ function HomePage() {
         <SectionHeader
           eyebrow="System architecture"
           title="Four concerns, each with a narrow job."
-          subtitle="The format does not assume a runtime. The SDK does not train. The stack does not assume the network is there."
+          subtitle="A format that assumes no runtime, operations that never train, middleware that wraps the engine already running, and a local-first runtime where the network is optional."
         />
         <div className="grid gap-5 sm:gap-6 md:grid-cols-2">
           {pillars.map((p, i) => (

@@ -1,6 +1,6 @@
+import { useEffect, useRef } from "react";
 import { OrganismScene } from "./organism/OrganismScene";
 import { useScrollProgress } from "@/hooks/use-scroll-progress";
-
 
 interface Chapter {
   index: string;
@@ -11,40 +11,49 @@ interface Chapter {
 const chapters: Chapter[] = [
   {
     index: "01",
-    title: "It starts as one neuron.",
-    body: "A single unit, no history, no context window to carry. Intelligence does not have to begin large — it has to begin able to change.",
+    title: "It starts with any agent.",
+    body: "No fixed base model, no privileged runtime. Neurons come online one by one as the agent works, and the organism starts from whatever is already running.",
   },
   {
     index: "02",
     title: "Actions become vectors.",
-    body: "What the system does gets captured and vectorized rather than replayed. Experience compacts into structure instead of piling up in the prompt.",
+    body: "Interactions, corrections and semantic memory are vectorized instead of replayed. Those vectors are what later become VeTas: talent, captured as structure.",
   },
   {
     index: "03",
-    title: "It eats adapters.",
-    body: "Trained LoRAs and adapters arrive as portable .natech talent files. Each one is absorbed into the organism as a capability, not a retraining run.",
+    title: "VeTas and LoRAs travel together.",
+    body: "A VeTa can be wrapped with a LoRA and used with existing adapters, unified in a single QAM. One artifact, one loader, no bespoke plumbing per engine.",
   },
   {
     index: "04",
-    title: "Fusion, not accumulation.",
-    body: "Up to three talent files fuse into one. The result is denser and more capable — bulkier in ability, still small on disk and in memory.",
+    title: "Accumulate, equip, merge.",
+    body: "Collect talents over time, equip the ones a task needs, merge them when they help each other, and carry the result anywhere. Nothing is retrained to get there.",
   },
   {
     index: "05",
     title: "Zero context tax.",
-    body: "What it learned lives in the weights and in Lazy Memory, not in the context window. It stays memory-ready and pays nothing per token to remember.",
+    body: "What the system learned lives in weights and in Lazy Memory, not in the context window. It stays memory ready and pays nothing per token to remember.",
   },
 ];
 
 export function StoryChapters() {
-  const { ref, progress } = useScrollProgress<HTMLDivElement>();
+  const { ref, subscribe } = useScrollProgress<HTMLDivElement>();
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-
+  useEffect(() => {
+    return subscribe((p) => {
+      const n = chapters.length;
+      cardsRef.current.forEach((el, i) => {
+        if (!el) return;
+        el.style.setProperty("--shift", `${(p - (i + 0.5) / n) * -40}px`);
+      });
+    });
+  }, [subscribe]);
 
   return (
     <div ref={ref} className="relative">
       <div className="pointer-events-none sticky top-0 -z-10 h-svh w-full overflow-hidden">
-        <OrganismScene progress={progress} className="absolute inset-0 h-full w-full" />
+        <OrganismScene subscribe={subscribe} className="absolute inset-0 h-full w-full" />
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent" />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent" />
       </div>
@@ -56,12 +65,13 @@ export function StoryChapters() {
             className="mx-auto flex min-h-svh max-w-6xl items-center px-5 sm:px-6"
           >
             <div
-              className={`w-full max-w-md rounded-xl border border-border/50 bg-background/70 p-6 backdrop-blur-sm sm:p-8 ${
+              ref={(el) => {
+                cardsRef.current[i] = el;
+              }}
+              className={`w-full max-w-md rounded-xl border border-border/50 bg-background/70 p-6 backdrop-blur-sm will-change-transform sm:p-8 ${
                 i % 2 === 1 ? "sm:ml-auto" : ""
               }`}
-              style={{
-                transform: `translateY(${(progress - (i + 0.5) / chapters.length) * -40}px)`,
-              }}
+              style={{ transform: "translateY(var(--shift, 0px))" }}
             >
               <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground sm:text-xs">
                 Chapter {c.index}
